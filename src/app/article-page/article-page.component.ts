@@ -4,10 +4,10 @@ import {NewsService} from '../shared/services/news.service';
 
 @Component({
   selector: 'app-news-page',
-  templateUrl: './news-page.component.html',
-  styleUrls: ['./news-page.component.scss']
+  templateUrl: './article-page.component.html',
+  styleUrls: ['./article-page.component.scss']
 })
-export class NewsPageComponent implements OnInit {
+export class ArticlePageComponent implements OnInit {
 
   article: News;
 

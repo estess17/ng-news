@@ -5,15 +5,16 @@ import {NewsService} from '../shared/services/news.service';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-home-page',
-  templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.scss']
+  selector: 'app-news-page',
+  templateUrl: './news-page.component.html',
+  styleUrls: ['./news-page.component.scss']
 })
-export class HomePageComponent implements OnInit {
+export class NewsPageComponent implements OnInit {
   news: News[] = [];
-  pageSlice = this.news.slice(0, 10);
+  filter = '';
 
-  value = '';
+  startIndex = 0;
+  endIndex = 10;
 
   constructor(private newsService: NewsService, private router: Router) { }
 
@@ -21,19 +22,27 @@ export class HomePageComponent implements OnInit {
     this.newsService.getNews().subscribe(news => {
       this.news = news.articles;
     });
+
+    this.filter = localStorage.getItem('filter');
   }
 
-  OnPageChange(event: PageEvent): any {
-    const startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if (endIndex > this.news.length) {
-      endIndex = this.news.length;
-    }
-    this.pageSlice = this.news.slice(startIndex, endIndex);
+  getPaginatorData(event: PageEvent): PageEvent {
+    this.startIndex = event.pageIndex * event.pageSize;
+    this.endIndex = this.startIndex + event.pageSize;
+    return event;
   }
 
-  goToNews(news: News): any {
-    this.newsService.currentArticle = news;
-    this.router.navigate(['/news-single']);
+  goToNews(article: News): any {
+    this.newsService.currentArticle = article;
+    this.router.navigate(['/article']);
+  }
+
+  onFilter(): void {
+    localStorage.setItem('filter', this.filter);
+  }
+
+  clearFilter(): void {
+    localStorage.setItem('filter', '');
+    this.filter = '';
   }
 }

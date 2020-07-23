@@ -1,0 +1,17 @@
+.header {
+  background: #c0392b;
+  height: 50px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  font-size: 1.5rem;
+
+  & a {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+

@@ -1,3 +1,20 @@
-<h1>{{article.title}}</h1>
-<img [src]="article.urlToImage" alt="">
-<p>{{article.content}}</p>
+<button class="backBtn" mat-raised-button color="link" routerLink="/">
+  <mat-icon aria-hidden="false" aria-label="Example home icon">keyboard_backspace</mat-icon>
+</button>
+
+<mat-card class="card">
+  <mat-card-title class="card-title">
+    {{article.title}}
+  </mat-card-title>
+
+  <mat-card-subtitle class="card-subtitle">
+    <span>{{article.author}}</span>
+    <small>{{article.publishedAt | date:'short'}}</small>
+  </mat-card-subtitle>
+
+  <img mat-card-image [src]="article.urlToImage" class="card-img">
+
+  <mat-card-content>
+    {{article.content}}
+  </mat-card-content>
+</mat-card>

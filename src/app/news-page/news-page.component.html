@@ -1,22 +1,41 @@
-<mat-form-field class="filter-input">
-  <mat-label>Search by title</mat-label>
-  <input matInput type="text" [(ngModel)]="value">
-  <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+<mat-form-field class="filter">
+  <mat-label class="filter-placeholder">Search by title</mat-label>
+
+  <input class="filter-input" matInput type="text" [(ngModel)]="filter" (input)="onFilter()">
+
+  <button mat-button *ngIf="filter" matSuffix mat-icon-button aria-label="Clear" (click)="clearFilter()">
     <mat-icon>close</mat-icon>
   </button>
 </mat-form-field>
 
-<mat-card class="card" *ngFor="let news of pageSlice | newsFilter:value">
-  <mat-card-title class="title">
-    {{news.title}}
-  </mat-card-title>
-  <img mat-card-image [src]="news.urlToImage" class="card-img" (click)="goToNews(news)">
-</mat-card>
+<div *ngIf="news; else preloader">
+  <mat-card
+    class="card"
+    *ngFor="let news of (news | slice: startIndex : endIndex) | newsFilter:filter"
+  >
+    <mat-card-title class="card-title">
+      {{news.title}}
+    </mat-card-title>
 
-<mat-paginator [length]="this.news.length"
-               [pageSize]="10"
-               [pageSizeOptions]="[5, 10, 20]"
-               (page)="OnPageChange($event)"
+    <mat-card-subtitle class="card-subtitle">
+      <span>{{news.author}}</span>
+      <small>{{news.publishedAt | date:'short'}}</small>
+    </mat-card-subtitle>
+
+    <img mat-card-image [src]="news.urlToImage" class="card-img" (click)="goToNews(news)">
+  </mat-card>
+</div>
+
+<ng-template #preloader class="preloader">
+  <mat-spinner></mat-spinner>
+</ng-template>
+
+<mat-paginator
+  [length]="news.length"
+  [pageSize]="10"
+  (page)="getPaginatorData($event)"
+  [pageSizeOptions]="[5, 10, 20]"
+  [showFirstLastButtons]="true"
 >
 </mat-paginator>
 
